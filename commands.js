@@ -19,6 +19,8 @@ const fs = require("fs");
      case "cat":
        commandLibrary.cat(userInputArray.slice(1));
        break;
+     case "head":
+       commandLibrary.head(userInputArray.slice(1));
    }
  }
 
@@ -28,15 +30,28 @@ const fs = require("fs");
    "echo": function(userInput) {
        done(userInput);
    },
+
    "cat": function(fullPath) {
        const fileName = fullPath[0];
        fs.readFile(fileName, (err, data) => {
            if (err) throw err;
            done(data);
        });
+
+   },
+   "head": function(number){
+
+     fs.readFile(fileName, (err, data) => {
+         if (err) throw err;
+
+         //display number of lines of file
+         
+         // for(var i = 0; i < number; i++){
+         //    console.log(line i of file);
+         // }
+
+     });
    }
-
-
 
  };
 
