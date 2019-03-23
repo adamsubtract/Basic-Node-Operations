@@ -21,6 +21,12 @@ const fs = require("fs");
        break;
      case "head":
        commandLibrary.head(userInputArray.slice(1));
+       break;
+      case "tail":
+      commandLibrary.tail(userInputArray.slice(1));
+      default:
+      process.stdout.write('\nPlease input: \'echo\', \'cat\',\'head\', \'tail\'');
+      process.stdout.write('\nprompt > ');
    }
  }
 
@@ -30,8 +36,8 @@ const fs = require("fs");
    "echo": function(userInput) {
        done(userInput);
    },
-
    "cat": function(fullPath) {
+
        const fileName = fullPath[0];
        fs.readFile(fileName, (err, data) => {
            if (err) throw err;
@@ -39,16 +45,37 @@ const fs = require("fs");
        });
 
    },
-   "head": function(number){
+   "head": function(userInput){
 
-     fs.readFile(fileName, (err, data) => {
+     let lineAmount = userInput[0];
+     let fileName = userInput[1];
+
+     //split dash off line number
+     lineAmount = lineAmount.split('-').slice(1);
+
+     fs.readFile(fileName, 'utf8', (err, data) => {
          if (err) throw err;
+         let linesOfCode = lineAmount[0];
+         let splitData = data.toString().split('\n').slice(0,linesOfCode).join('\n');
+         data = splitData;
+         done(data);
 
-         //display number of lines of file
-         
-         // for(var i = 0; i < number; i++){
-         //    console.log(line i of file);
-         // }
+     });
+   },
+   "tail": function(userInput){
+
+     let lineAmount = userInput[0];
+     let fileName = userInput[1];
+
+     //split dash off line number
+     lineAmount = lineAmount.split('-').slice(1);
+
+     fs.readFile(fileName, 'utf8', (err, data) => {
+         if (err) throw err;
+         let linesOfCode = lineAmount[0];
+         let splitData = data.toString().split('\n').slice(linesOfCode).join('\n');
+         data = splitData;
+         done(data);
 
      });
    }
